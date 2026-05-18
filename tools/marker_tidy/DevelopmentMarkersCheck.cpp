@@ -58,7 +58,12 @@ namespace {
         return true;
     if (unqualified_type->isIncompleteType())
         return true;
-    return unqualified_type.isTriviallyCopyableType(context);
+    if (!unqualified_type.isTriviallyCopyableType(context))
+        return false;
+
+    const auto type_size = context.getTypeSizeInChars(unqualified_type);
+    const auto pointer_size = context.getTypeSizeInChars(context.VoidPtrTy);
+    return type_size.getQuantity() <= (pointer_size.getQuantity() * 2);
 }
 
 [[nodiscard]] auto was_written_with_auto(const VarDecl &decl) -> bool {
@@ -158,7 +163,7 @@ private:
         if (was_written_with_auto(var) and is_by_value(var.getType()) and (not is_cheap_copy(var.getType(), context)) and initializes_from_lvalue(var)) {
             diag(
                 var.getLocation(),
-                "by-value auto initialized from a non-trivial lvalue must use copy(...) or bind by "
+                "by-value auto initialized from a non-cheap lvalue must use copy(...) or bind by "
                 "reference");
         }
     }
@@ -192,7 +197,7 @@ private:
         }
 
         if (is_by_value(type) and (not is_cheap_copy(type, context)) and not has_cpy) {
-            diag(param.getLocation(), "non-trivial by-value parameter must be marked cpy");
+            diag(param.getLocation(), "non-cheap by-value parameter must be marked cpy");
         }
     }
 };
