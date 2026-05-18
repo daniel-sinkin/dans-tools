@@ -98,7 +98,7 @@ cd "${repo_root}"
 exec clang-tidy \
     --load="${plugin_path}" \
     -p "${project_build_path}" \
-    --checks='-*,ds-dev-marker-tidy' \
+    --checks='-*,ds-dev-marker-tidy,misc-const-correctness' \
     --warnings-as-errors='*' \
     --header-filter='.*' \
     "${files[@]}"

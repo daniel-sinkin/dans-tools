@@ -9,8 +9,8 @@ Dev tools and the like.
 ```
 
 The script finds the nearest `.ds_dev`, builds the local clang-tidy plugin, and
-runs the `ds-dev-marker-tidy` check against the configured translation
-units.
+runs the `ds-dev-marker-tidy` and `misc-const-correctness` checks against the
+configured translation units.
 
 Example `.ds_dev`:
 
