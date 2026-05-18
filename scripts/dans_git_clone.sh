@@ -5,34 +5,34 @@ commit_message="initial setup"
 clone_url=""
 selected_template=""
 
-template_ids=("nothing" "ds-core")
-template_labels=("nothing" "ds-core (most recent version)")
-template_urls=("" "https://github.com/Daniel-Sinkin/ds-core")
+template_ids=("nothing" "dans-template")
+template_labels=("nothing" "dans-template (most recent version)")
+template_urls=("" "https://github.com/Daniel-Sinkin/dans-template")
 
 usage() {
-    cat <<'EOF'
+    cat <<'USAGE'
 Usage:
-  ds_git_clone
-  ds_git_clone --clone <repo-url>
-  ds_git_clone -c <repo-url>
-  ds_git_clone --template <template-id>
-  ds_git_clone --list
-  ds_git_clone -l
+  dans_git_clone
+  dans_git_clone --clone <repo-url>
+  dans_git_clone -c <repo-url>
+  dans_git_clone --template <template-id>
+  dans_git_clone --list
+  dans_git_clone -l
 
 Modes:
   Run inside an empty git repo with zero commits, or run from a non-git parent
   directory with --clone/-c <repo-url> to clone the target repo first.
 
 Templates:
-  nothing   Leave the repo empty.
-  ds-core   Copy the latest files from https://github.com/Daniel-Sinkin/ds-core.
+  nothing         Leave the repo empty.
+  dans-template   Copy the latest files from https://github.com/Daniel-Sinkin/dans-template.
 
 Interactive selection also accepts "a" to abort before any clone happens.
-EOF
+USAGE
 }
 
 die() {
-    printf 'ds_git_clone: %s\n' "$*" >&2
+    printf 'dans_git_clone: %s\n' "$*" >&2
     exit 1
 }
 

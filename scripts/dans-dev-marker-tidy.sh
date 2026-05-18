@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 tool_root="$(cd "${script_dir}/.." && pwd)"
 
-find_ds_dev_root() {
+find_dans_dev_root() {
     local start="${1:-${PWD}}"
     if [[ -f "${start}" ]]; then
         start="$(dirname "${start}")"
@@ -12,7 +12,7 @@ find_ds_dev_root() {
     start="$(cd "${start}" && pwd)"
 
     while [[ "${start}" != "/" ]]; do
-        if [[ -f "${start}/.ds_dev" ]]; then
+        if [[ -f "${start}/.dans_dev" ]]; then
             printf '%s\n' "${start}"
             return 0
         fi
@@ -22,8 +22,8 @@ find_ds_dev_root() {
     return 1
 }
 
-repo_root="$(find_ds_dev_root "${1:-${PWD}}")"
-config_path="${repo_root}/.ds_dev"
+repo_root="$(find_dans_dev_root "${1:-${PWD}}")"
+config_path="${repo_root}/.dans_dev"
 
 config_value() {
     local key="$1"
@@ -75,13 +75,13 @@ if [[ ! -f "${project_build_path}/CMakeCache.txt" ]]; then
     cmake -S "${repo_root}" -B "${project_build_path}" >/dev/null
 fi
 
-tools_build_dir="${DS_TOOLS_BUILD_DIR:-${tool_root}/build/marker_tidy}"
-plugin_target="ds_dev_marker_tidy_plugin"
+tools_build_dir="${DANS_TOOLS_BUILD_DIR:-${tool_root}/build/marker_tidy}"
+plugin_target="dans_dev_marker_tidy_plugin"
 
 cmake -S "${tool_root}/tools/marker_tidy" -B "${tools_build_dir}" >/dev/null
 cmake --build "${tools_build_dir}" --target "${plugin_target}" -j >/dev/null
 
-plugin_path="$(find "${tools_build_dir}" -name 'ds_dev_marker_tidy_plugin.*' -type f | head -n 1)"
+plugin_path="$(find "${tools_build_dir}" -name 'dans_dev_marker_tidy_plugin.*' -type f | head -n 1)"
 if [[ -z "${plugin_path}" ]]; then
     echo "Could not find ${plugin_target} in ${tools_build_dir}" >&2
     exit 1
@@ -98,7 +98,7 @@ cd "${repo_root}"
 exec clang-tidy \
     --load="${plugin_path}" \
     -p "${project_build_path}" \
-    --checks='-*,ds-dev-marker-tidy' \
+    --checks='-*,dans-dev-marker-tidy' \
     --warnings-as-errors='*' \
     --header-filter='.*' \
     "${files[@]}"

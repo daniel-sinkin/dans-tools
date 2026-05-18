@@ -14,7 +14,7 @@
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Registry.h"
 
-namespace clang::tidy::ds_dev {
+namespace clang::tidy::dans_dev {
 namespace {
 [[nodiscard]] auto has_annotation(const Decl &decl, llvm::StringRef name) -> bool {
     for (const auto *attr : decl.specific_attrs<AnnotateAttr>()) {
@@ -235,18 +235,18 @@ private:
     }
 };
 
-class DsDevMarkerTidyModule final : public ClangTidyModule {
+class DansDevMarkerTidyModule final : public ClangTidyModule {
 public:
     void addCheckFactories(ClangTidyCheckFactories &factories) override {
-        factories.registerCheck<DevelopmentMarkersCheck>("ds-dev-marker-tidy");
+        factories.registerCheck<DevelopmentMarkersCheck>("dans-dev-marker-tidy");
     }
 };
 
-static ClangTidyModuleRegistry::Add<DsDevMarkerTidyModule> module{
-    "ds-dev-module",
-    "Adds ds-dev project development checks.",
+static ClangTidyModuleRegistry::Add<DansDevMarkerTidyModule> module{
+    "dans-dev-module",
+    "Adds dans-dev project development checks.",
 };
 } // namespace
-} // namespace clang::tidy::ds_dev
+} // namespace clang::tidy::dans_dev
 
-extern "C" int ds_dev_marker_tidy_plugin_anchor = 0;
+extern "C" int dans_dev_marker_tidy_plugin_anchor = 0;
