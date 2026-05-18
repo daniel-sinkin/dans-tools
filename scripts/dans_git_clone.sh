@@ -173,6 +173,21 @@ copy_template_files() {
     fi
 }
 
+build_template_repo() {
+    local repo_root="$1"
+
+    if [[ ! -f "${repo_root}/CMakeLists.txt" ]]; then
+        printf 'No CMakeLists.txt found; skipping build.\n'
+        return 0
+    fi
+
+    printf 'Configuring template build...\n'
+    cmake -S "${repo_root}" -B "${repo_root}/build"
+
+    printf 'Building template...\n'
+    cmake --build "${repo_root}/build" -j
+}
+
 commit_if_changed() {
     local repo_root="$1"
     if [[ -z "$(git -C "${repo_root}" status --short)" ]]; then
@@ -257,6 +272,7 @@ fi
 
 assert_zero_commit_repo "${target_root}"
 copy_template_files "${template_index}" "${target_root}"
+build_template_repo "${target_root}"
 if commit_if_changed "${target_root}"; then
     push_initial_commit "${target_root}"
 fi

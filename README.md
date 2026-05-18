@@ -30,6 +30,7 @@ dans_git_clone -l
 ```
 
 `dans_git_clone` applies a selected starter template only to a zero-commit git
-repo. From inside an already-cloned empty repo, run it directly. From a parent
+repo. It configures and builds the copied template before creating the initial
+commit. From inside an already-cloned empty repo, run it directly. From a parent
 folder, pass `--clone` or `-c` with the target repo URL and it will clone that
 target repo first.
