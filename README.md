@@ -25,9 +25,12 @@ marker_tidy_translation_units = src/main.cpp
 ```sh
 ds_git_clone
 ds_git_clone --clone <repo-url>
+ds_git_clone -c <repo-url>
+ds_git_clone --list
+ds_git_clone -l
 ```
 
 `ds_git_clone` applies a selected starter template only to a zero-commit git
 repo. From inside an already-cloned empty repo, run it directly. From a parent
-folder, pass `--clone` or `-clone` with the target repo URL and it will clone
+folder, pass `--clone` or `-c` with the target repo URL and it will clone
 that target repo first.

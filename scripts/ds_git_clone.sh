@@ -14,12 +14,14 @@ usage() {
 Usage:
   ds_git_clone
   ds_git_clone --clone <repo-url>
+  ds_git_clone -c <repo-url>
   ds_git_clone --template <template-id>
   ds_git_clone --list
+  ds_git_clone -l
 
 Modes:
   Run inside an empty git repo with zero commits, or run from a non-git parent
-  directory with --clone/-clone <repo-url> to clone the target repo first.
+  directory with --clone/-c <repo-url> to clone the target repo first.
 
 Templates:
   nothing   Leave the repo empty.
@@ -199,7 +201,7 @@ push_initial_commit() {
 
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
-        -clone | --clone)
+        -c | --clone)
             [[ "$#" -ge 2 ]] || die "$1 requires a repo URL"
             clone_url="$2"
             shift 2
@@ -209,7 +211,7 @@ while [[ "$#" -gt 0 ]]; do
             selected_template="$2"
             shift 2
             ;;
-        --list)
+        -l | --list)
             list_templates
             exit 0
             ;;
@@ -229,7 +231,7 @@ if [[ -n "${clone_url}" ]]; then
     [[ -z "${git_root}" ]] || die "--clone must be run from outside an existing git repo"
     assert_zero_commit_remote "${clone_url}"
 else
-    [[ -n "${git_root}" ]] || die "not inside a git repo; use --clone <repo-url> from the parent folder"
+    [[ -n "${git_root}" ]] || die "not inside a git repo; use --clone or -c <repo-url> from the parent folder"
     assert_zero_commit_repo "${git_root}"
 fi
 
